@@ -91,6 +91,9 @@ endif
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/bin/otasigcheck.sh:system/bin/otasigcheck.sh
 
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/bin/f2fs/format.sh:install/f2fs/format.sh
+
 # init.d support
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
