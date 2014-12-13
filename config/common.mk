@@ -93,6 +93,10 @@ PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
     vendor/cm/prebuilt/common/bin/sysinit:system/bin/sysinit
 
+# fstrim support
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/etc/init.d/99fstrim:system/etc/init.d/99fstrim
+
 # userinit support
 PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit
