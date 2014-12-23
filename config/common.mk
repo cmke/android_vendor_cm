@@ -98,7 +98,12 @@ PRODUCT_COPY_FILES += \
 
 # fstrim support
 PRODUCT_COPY_FILES += \
-    vendor/cm/prebuilt/common/etc/init.d/99fstrim:system/etc/init.d/99fstrim
+    vendor/cm/prebuilt/common/etc/init.d/98fstrim:system/etc/init.d/98fstrim
+
+# SuperSU
+PRODUCT_COPY_FILES += \
+    vendor/cm/prebuilt/common/UPDATE-SuperSU.zip:install/supersu/supersu.zip \
+    vendor/cm/prebuilt/common/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
 
 # Proprietary latinime lib needed for Keyboard swyping
 PRODUCT_COPY_FILES += \
