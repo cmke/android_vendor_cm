@@ -92,7 +92,7 @@ PRODUCT_COPY_FILES += \
     vendor/cm/prebuilt/common/bin/otasigcheck.sh:system/bin/otasigcheck.sh
 
 PRODUCT_COPY_FILES += \
-    vendor/cm/prebuilt/common/bin/f2fs/format.sh:install/f2fs/format.sh
+    vendor/cm/prebuilt/common/bin/f2fs/format.sh:install/bin/f2fs/format.sh
 
 # init.d support
 PRODUCT_COPY_FILES += \
