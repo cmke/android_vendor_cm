@@ -339,6 +339,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 -include vendor/cm/config/common_ukm.mk
 
+-include vendor/cm/config/sm.mk
+
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 
 -include vendor/cyngn/product.mk
