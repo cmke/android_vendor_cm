@@ -47,7 +47,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.kernel=$(SM_KERNEL_VERSION)
 endif
 
-ifeq (yes,$(GRAPHITE_OPTS))
+ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
 endif
 endif
@@ -70,13 +70,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.android=$(SM_AND_VERSION)
 endif
 
-ifeq (yes,$(GRAPHITE_OPTS))
+ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
 endif
 endif
 endif
 
-ifeq (yes,$(STRICT_ALIASING))
+ifeq (true,$(STRICT_ALIASING))
 OPT2 := (strict)
 endif
 
@@ -84,7 +84,11 @@ ifeq (true,$(USE_O3_OPTIMIZATIONS))
 OPT3 := (extreme)
 endif
 
-GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT3)
+ifeq (true,$(KRAIT_TUNINGS))
+OPT4 := (krait)
+endif
+
+GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT3)$(OPT4)
 ifneq (,$(GCC_OPTIMIZATION_LEVELS))
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.flags=$(GCC_OPTIMIZATION_LEVELS)
