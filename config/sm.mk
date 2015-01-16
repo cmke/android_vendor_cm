@@ -13,38 +13,67 @@ endif
 # Only use these compilers on linux host.
 ifeq (linux,$(HOST_OS))
 
+ifeq (4.8-sm,$(TARGET_GCC_VERSION))
+USE_SM_TOOLCHAIN := true
+endif
+ifeq (4.9-sm,$(TARGET_GCC_VERSION))
+USE_SM_TOOLCHAIN := true
+endif
+
 # Add extra libs for the compilers to use
 # Filter by TARGET_ARCH since we're pointing to ARCH specific compilers.
 # To use this on new devices define TARGET_ARCH in device makefile.
 ifeq (arm,$(TARGET_ARCH))
-export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION_EXP)/arch-arm/usr/lib
-export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION_EXP)/arch-arm/usr/lib
+ifeq (true,$(USE_SM_TOOLCHAIN))
+export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)/arch-arm/usr/lib
+export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)/arch-arm/usr/lib
+endif
 
 # Path to toolchain
-SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION_EXP)
+SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)
 SM_AND := $(shell $(SM_AND_PATH)/bin/arm-linux-androideabi-gcc --version)
 
 # Find strings in version info
 ifneq ($(filter (SaberMod%),$(SM_AND)),)
+SM_AND_VERSION := $(filter 4.8.4 4.8.5 4.8.6,$(SM_AND))
 SM_AND_NAME := $(filter (SaberMod%),$(SM_AND))
 SM_AND_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_AND))
 SM_AND_STATUS := $(filter (release) (prerelease) (experimental),$(SM_AND))
-SM_AND_VERSION := $(SM_AND_NAME)-$(SM_AND_DATE)-$(SM_AND_STATUS)
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.sm.android=$(SM_AND_VERSION)
+SM_AND_VERSION := $(SM_AND_VERSION)-$(SM_AND_NAME)-$(SM_AND_DATE)-$(SM_AND_STATUS)
+else
+SM_AND_VERSION := $(filter 4.7 4.8 4.9 4.9.x%,$(SM_AND))
+SM_AND_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_AND))
+SM_AND_STATUS := $(filter (release) (prerelease) (experimental),$(SM_AND))
+SM_AND_VERSION := $(SM_AND_VERSION)-$(SM_AND_DATE)-$(SM_AND_STATUS)
 endif
 
-SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.sm.android=$(SM_AND_VERSION)
+
+ifdef TARGET_KERNEL_CUSTOM_TOOLCHAIN
+KERNEL_GCC_VER := TARGET_KERNEL_CUSTOM_TOOLCHAIN
+else
+KERNEL_GCC_VER := 4.8
+endif
+
+SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(KERNEL_GCC_VER)
 SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/arm-eabi-gcc --version)
 
 ifneq ($(filter (SaberMod%),$(SM_KERNEL)),)
+SM_KERNEL_VERSION := $(filter 4.8.4 4.8.5 4.8.6 4.9.1 4.9.2 4.9.3 4.9.4,$(SM_KERNEL))
 SM_KERNEL_NAME := $(filter (SaberMod%),$(SM_KERNEL))
 SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
 SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
-SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+SM_KERNEL_VERSION := $(SM_KERNEL_VERSION)-$(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+else
+SM_KERNEL_VERSION := $(filter 4.7 4.8 4.9 4.9.x%,$(SM_KERNEL))
+SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
+SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
+SM_KERNEL_VERSION := $(SM_KERNEL_VERSION)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+endif
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.kernel=$(SM_KERNEL_VERSION)
-endif
 
 ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
@@ -61,13 +90,20 @@ SM_AND := $(shell $(SM_AND_PATH)/bin/aarch64-linux-android-gcc --version)
 
 # Find strings in version info
 ifneq ($(filter (SaberMod%),$(SM_AND)),)
+SM_AND_VERSION := $(filter 4.9.1 4.9.2 4.9.3 4.9.4,$(SM_AND))
 SM_AND_NAME := $(filter (SaberMod%),$(SM_AND))
 SM_AND_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_AND))
 SM_AND_STATUS := $(filter (release) (prerelease) (experimental),$(SM_AND))
-SM_AND_VERSION := $(SM_AND_NAME)-$(SM_AND_DATE)-$(SM_AND_STATUS)
+SM_AND_VERSION := $(SM_AND_VERSION)-$(SM_AND_NAME)-$(SM_AND_DATE)-$(SM_AND_STATUS)
+else
+SM_AND_VERSION := $(filter 4.8 4.9,$(SM_AND))
+SM_AND_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_AND))
+SM_AND_STATUS := $(filter (release) (prerelease) (experimental),$(SM_AND))
+SM_AND_VERSION := $(SM_AND_VERSION)-$(SM_AND_DATE)-$(SM_AND_STATUS)
+endif
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.android=$(SM_AND_VERSION)
-endif
 
 ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
