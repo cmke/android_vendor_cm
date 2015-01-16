@@ -50,13 +50,7 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.android=$(SM_AND_VERSION)
 
-ifdef TARGET_KERNEL_CUSTOM_TOOLCHAIN
-KERNEL_GCC_VER := TARGET_KERNEL_CUSTOM_TOOLCHAIN
-else
-KERNEL_GCC_VER := 4.8
-endif
-
-SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(KERNEL_GCC_VER)
+SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_GCC_VERSION_KERNEL)
 SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/arm-eabi-gcc --version)
 
 ifneq ($(filter (SaberMod%),$(SM_KERNEL)),)
@@ -81,8 +75,10 @@ endif
 endif
 
 ifeq (arm64,$(TARGET_ARCH))
+ifeq (true,$(USE_SM_TOOLCHAIN))
 export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)/arch-arm64/usr/lib
 export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)/arch-arm64/usr/lib
+endif
 
 # Path to toolchain
 SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)
