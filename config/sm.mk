@@ -124,15 +124,15 @@ ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
 # Graphite flags and friends for ROM
 GRAPHITE_FLAGS := \
-    -fgraphite \
-    -fgraphite-identity \
-    -floop-flatten \
-    -floop-parallelize-all \
-    -ftree-loop-linear \
-    -floop-interchange \
-    -floop-strip-mine \
-    -floop-block \
-    -Wno-error=maybe-uninitialized
+	-fgraphite \
+	-fgraphite-identity \
+	-floop-flatten \
+	-floop-parallelize-all \
+	-ftree-loop-linear \
+	-floop-interchange \
+	-floop-strip-mine \
+	-floop-block \
+	-Wno-error=maybe-uninitialized
 endif
 endif
 
@@ -141,20 +141,17 @@ ifeq (true,$(GRAPHITE_OPTS))
 	# Add more modules if needed for devices in BoardConfig.mk
 	# LOCAL_DISABLE_GRAPHITE +=
 	LOCAL_DISABLE_GRAPHITE := \
-	  libunwind \
-	  libFFTEm \
-	  libicui18n \
-	  libskia \
-	  libvpx \
-	  libmedia_jni \
-	  libstagefright_mp3dec \
-	  libart \
-	  mdnsd \
-	  libwebrtc_spl \
-	  third_party_WebKit_Source_core_webcore_svg_gyp \
-	  libjni_filtershow_filters \
-	  libavformat \
-	  libavcodec
+		libunwind \
+		libFFTEm \
+		libicui18n \
+		libskia \
+		libvpx \
+		libmedia_jni \
+		libstagefright_mp3dec \
+		libart \
+		libavcodec \
+		libSR_Core \
+		fio
 endif
 
 ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
