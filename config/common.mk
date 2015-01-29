@@ -338,10 +338,20 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 -include vendor/cm/config/common_ukm.mk
 
--include vendor/cm/config/sm.mk
-
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 
 -include vendor/cyngn/product.mk
 
 $(call prepend-product-if-exists, vendor/extra/product.mk)
+
+# Inherit sabermod configs.  Don't include if TARGET_ARCH isn't defined
+ifdef TARGET_ARCH
+  include vendor/cm/config/sm.mk
+else
+    $(warning ********************************************************************************)
+    $(warning *  TARGET_ARCH not defined.)
+    $(warning *  This needs to be set in device trees before common.mk is called.)
+    $(warning *  Define TARGET_ARCH before common.mk is called.)
+    $(warning *  skipping sm.mk.)
+    $(warning ********************************************************************************)
+endif
