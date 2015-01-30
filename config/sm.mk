@@ -217,6 +217,11 @@ ifeq ($(strip $(TARGET_SM_AND_DEFINED)),true)
 		libSR_Core \
 		fio
 
+	ifeq (4.9-sm,$(TARGET_SM_AND))
+		LOCAL_DISABLE_GRAPHITE += \
+			libFraunhoferAAC
+	endif
+
     ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
       OPT2 := (max)
 
