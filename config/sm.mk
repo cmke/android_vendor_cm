@@ -35,7 +35,7 @@ SM_AND := $(shell $(SM_AND_PATH)/bin/arm-linux-androideabi-gcc --version)
 
 # Find strings in version info
 ifneq ($(filter (SaberMod%),$(SM_AND)),)
-SM_AND_VERSION := $(filter 4.8.4 4.8.5 4.8.6,$(SM_AND))
+SM_AND_VERSION := $(filter 4.8.4 4.8.5 4.8.6 4.9.1 4.9.2 4.9.3 4.9.4,$(SM_AND))
 SM_AND_NAME := $(filter (SaberMod%),$(SM_AND))
 SM_AND_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_AND))
 SM_AND_STATUS := $(filter (release) (prerelease) (experimental),$(SM_AND))
