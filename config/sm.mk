@@ -13,10 +13,10 @@ endif
 # Only use these compilers on linux host.
 ifeq (linux,$(HOST_OS))
 
-ifeq (4.8-sm,$(TARGET_GCC_VERSION))
+ifeq (4.8-sm,$(TARGET_TC_ROM))
 USE_SM_TOOLCHAIN := true
 endif
-ifeq (4.9-sm,$(TARGET_GCC_VERSION))
+ifeq (4.9-sm,$(TARGET_TC_ROM))
 USE_SM_TOOLCHAIN := true
 endif
 
@@ -25,12 +25,12 @@ endif
 # To use this on new devices define TARGET_ARCH in device makefile.
 ifeq (arm,$(TARGET_ARCH))
 ifeq (true,$(USE_SM_TOOLCHAIN))
-export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)/arch-arm/usr/lib
-export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)/arch-arm/usr/lib
+export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_TC_ROM)/arch-arm/usr/lib
+export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_TC_ROM)/arch-arm/usr/lib
 endif
 
 # Path to toolchain
-SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_GCC_VERSION)
+SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-linux-androideabi-$(TARGET_TC_ROM)
 SM_AND := $(shell $(SM_AND_PATH)/bin/arm-linux-androideabi-gcc --version)
 
 # Find strings in version info
@@ -50,7 +50,7 @@ endif
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.android=$(SM_AND_VERSION)
 
-SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_GCC_VERSION_KERNEL)
+SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_TC_KERNEL)
 SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/arm-eabi-gcc --version)
 
 ifneq ($(filter (SaberMod%),$(SM_KERNEL)),)
@@ -89,12 +89,12 @@ endif
 
 ifeq (arm64,$(TARGET_ARCH))
 ifeq (true,$(USE_SM_TOOLCHAIN))
-export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)/arch-arm64/usr/lib
-export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)/arch-arm64/usr/lib
+export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_TC_ROM)/arch-arm64/usr/lib
+export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_TC_ROM)/arch-arm64/usr/lib
 endif
 
 # Path to toolchain
-SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)
+SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_TC_ROM)
 SM_AND := $(shell $(SM_AND_PATH)/bin/aarch64-linux-android-gcc --version)
 
 # Find strings in version info
@@ -149,7 +149,7 @@ LOCAL_DISABLE_GRAPHITE := \
   libSR_Core \
   fio
 
-ifeq (4.9-sm,$(TARGET_GCC_VERSION))
+ifeq (4.9-sm,$(TARGET_TC_ROM))
   LOCAL_DISABLE_GRAPHITE += \
     libFraunhoferAAC
 endif
