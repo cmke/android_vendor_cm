@@ -241,8 +241,12 @@ ifeq ($(strip $(TARGET_SM_AND_DEFINED)),true)
       O3_FLAGS := \
         -O3 \
         -Wno-error=array-bounds \
-        -Wno-error=strict-overflow \
-		-Wno-error=maybe-uninitialized
+        -Wno-error=strict-overflow
+
+	  # disable flag
+      LOCAL_DISABLE_MAYBE_UNINITIALIZED := \
+		fastboot
+
     endif
 
     GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)
