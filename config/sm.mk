@@ -71,17 +71,30 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
+GRAPHITE_FLAGS := \
+  -fgraphite \
+  -fgraphite-identity \
+  -floop-flatten \
+  -floop-parallelize-all \
+  -ftree-loop-linear \
+  -floop-interchange \
+  -floop-strip-mine \
+  -floop-block
+ifeq ($(strip $(USE_HOST_4_8)),true)
+  GRAPHITE_FLAGS += \
+    -Wno-error=maybe-uninitialized
+endif
 endif
 endif
 
 ifeq (arm64,$(TARGET_ARCH))
 ifeq (true,$(USE_SM_TOOLCHAIN))
-export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)/arch-arm64/usr/lib
-export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)/arch-arm64/usr/lib
+export LD_LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)/arch-arm64/usr/lib
+export LIBRARY_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)/arch-arm64/usr/lib
 endif
 
 # Path to toolchain
-SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION_EXP)
+SM_AND_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-linux-android-$(TARGET_GCC_VERSION)
 SM_AND := $(shell $(SM_AND_PATH)/bin/aarch64-linux-android-gcc --version)
 
 # Find strings in version info
@@ -103,8 +116,42 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 ifeq (true,$(GRAPHITE_OPTS))
 OPT1 := (graphite)
+GRAPHITE_FLAGS := \
+  -fgraphite \
+  -fgraphite-identity \
+  -floop-flatten \
+  -floop-parallelize-all \
+  -ftree-loop-linear \
+  -floop-interchange \
+  -floop-strip-mine \
+  -floop-block
+ifeq ($(strip $(USE_HOST_4_8)),true)
+  GRAPHITE_FLAGS += \
+    -Wno-error=maybe-uninitialized
 endif
 endif
+endif
+endif
+
+# Force disable some modules that are not compatible with graphite flags.
+# Add more modules if needed for devices in BoardConfig.mk
+# LOCAL_DISABLE_GRAPHITE +=
+LOCAL_DISABLE_GRAPHITE := \
+  libunwind \
+  libFFTEm \
+  libicui18n \
+  libskia \
+  libvpx \
+  libmedia_jni \
+  libstagefright_mp3dec \
+  libart \
+  libavcodec \
+  libSR_Core \
+  fio
+
+ifeq (4.9-sm,$(TARGET_GCC_VERSION))
+  LOCAL_DISABLE_GRAPHITE += \
+    libFraunhoferAAC
 endif
 
 ifeq (true,$(STRICT_ALIASING))
